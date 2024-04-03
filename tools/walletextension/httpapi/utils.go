@@ -25,8 +25,8 @@ func getUserID(conn UserConn) ([]byte, error) {
 	// try getting userID (`token`) from query parameters and return it if successful
 	userID, err := getQueryParameter(conn.ReadRequestParams(), common.EncryptedTokenQueryParameter)
 	if err == nil {
-		if len(userID) != common.MessageUserIDLenWithPrefix {
-			return nil, fmt.Errorf(fmt.Sprintf("wrong length of userID from URL. Got: %d, Expected: %d", len(userID), common.MessageUserIDLenWithPrefix))
+		if len(userID) != common.EthereumAddressLen {
+			return nil, fmt.Errorf(fmt.Sprintf("wrong length of userID from URL. Got: %d, Expected: %d", len(userID), common.EthereumAddressLen))
 		}
 		return hexutils.HexToBytes(userID[2:]), err
 	}

@@ -351,7 +351,7 @@ func getMessageRequestHandler(walletExt *rpcapi.Services, conn UserConn) {
 
 	// get address from the request
 	encryptionToken, ok := reqJSONMap[common.JSONKeyEncryptionToken]
-	if !ok || len(encryptionToken.(string)) != common.MessageUserIDLen {
+	if !ok || len(encryptionToken.(string)) != common.EthereumAddressLen {
 		handleError(conn, walletExt.Logger(), fmt.Errorf("unable to read encryptionToken field from the request or it is not of correct length"))
 		return
 	}
@@ -374,8 +374,8 @@ func getMessageRequestHandler(walletExt *rpcapi.Services, conn UserConn) {
 			formatsSlice = append(formatsSlice, formatStr)
 		}
 	}
-
-	userID := hexutils.HexToBytes(encryptionToken.(string))
+	encryptionTokenWithoutPrefix := encryptionToken.(string)[2:]
+	userID := hexutils.HexToBytes(encryptionTokenWithoutPrefix)
 	if len(userID) != viewingkey.UserIDLength {
 		return
 	}

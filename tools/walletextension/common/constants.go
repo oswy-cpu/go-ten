@@ -28,8 +28,6 @@ const (
 	HTTPProtocol                        = "http://"
 	EncryptedTokenQueryParameter        = "token"
 	AddressQueryParameter               = "a"
-	MessageUserIDLen                    = 40
-	MessageUserIDLenWithPrefix          = 42
 	EthereumAddressLen                  = 42
 	GetStorageAtUserIDRequestMethodName = "0x0000000000000000000000000000000000000000"
 	SuccessMsg                          = "success"
