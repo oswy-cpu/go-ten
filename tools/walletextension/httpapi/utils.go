@@ -2,9 +2,9 @@ package httpapi
 
 import (
 	"fmt"
+	"github.com/status-im/keycard-go/hexutils"
 
 	gethlog "github.com/ethereum/go-ethereum/log"
-	"github.com/status-im/keycard-go/hexutils"
 	"github.com/ten-protocol/go-ten/go/common/log"
 	"github.com/ten-protocol/go-ten/tools/walletextension/common"
 )
@@ -25,10 +25,13 @@ func getUserID(conn UserConn) ([]byte, error) {
 	// try getting userID (`token`) from query parameters and return it if successful
 	userID, err := getQueryParameter(conn.ReadRequestParams(), common.EncryptedTokenQueryParameter)
 	if err == nil {
-		if len(userID) != common.EthereumAddressLen {
-			return nil, fmt.Errorf(fmt.Sprintf("wrong length of userID from URL. Got: %d, Expected: %d", len(userID), common.EthereumAddressLen))
+		if len(userID) == common.EthereumAddressLen {
+			return hexutils.HexToBytes(userID[2:]), nil
+		} else if len(userID) == common.EncryptionTokenWithoutPrefixLen {
+			return hexutils.HexToBytes(userID), nil
 		}
-		return hexutils.HexToBytes(userID[2:]), err
+
+		return nil, fmt.Errorf(fmt.Sprintf("wrong length of userID from URL. Got: %d, Expected: %d", len(userID), common.EthereumAddressLen))
 	}
 
 	return nil, fmt.Errorf("missing token field")

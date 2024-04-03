@@ -29,6 +29,7 @@ const (
 	EncryptedTokenQueryParameter        = "token"
 	AddressQueryParameter               = "a"
 	EthereumAddressLen                  = 42
+	EncryptionTokenWithoutPrefixLen     = 40
 	GetStorageAtUserIDRequestMethodName = "0x0000000000000000000000000000000000000000"
 	SuccessMsg                          = "success"
 	APIVersion1                         = "/v1"

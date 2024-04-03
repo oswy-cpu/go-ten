@@ -33,7 +33,7 @@ func NewTenGatewayLibrary(httpURL, wsURL string) *TGLib {
 }
 
 func (o *TGLib) UserID() string {
-	return hexutils.BytesToHex(o.userID)
+	return "0x" + gethcommon.Bytes2Hex(o.userID) // add 0x prefix, because it is removed in hex
 }
 
 func (o *TGLib) UserIDBytes() []byte {
@@ -46,7 +46,7 @@ func (o *TGLib) Join() error {
 	if err != nil || statusCode != 200 {
 		return fmt.Errorf(fmt.Sprintf("Failed to get userID. Status code: %d, err: %s", statusCode, err))
 	}
-	o.userID = hexutils.HexToBytes(string(userID))
+	o.userID = gethcommon.FromHex(string(userID))
 	return nil
 }
 
@@ -74,7 +74,7 @@ func (o *TGLib) RegisterAccount(pk *ecdsa.PrivateKey, addr gethcommon.Address) e
 	req, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodPost,
-		o.httpURL+"/v1/authenticate/?token="+hexutils.BytesToHex(o.userID),
+		o.httpURL+"/v1/authenticate/?token="+o.UserID(),
 		strings.NewReader(payload),
 	)
 	if err != nil {
@@ -124,7 +124,7 @@ func (o *TGLib) RegisterAccountPersonalSign(pk *ecdsa.PrivateKey, addr gethcommo
 	req, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodPost,
-		o.httpURL+"/v1/authenticate/?token="+hexutils.BytesToHex(o.userID),
+		o.httpURL+"/v1/authenticate/?token="+o.UserID(),
 		strings.NewReader(payload),
 	)
 	if err != nil {

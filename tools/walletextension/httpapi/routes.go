@@ -4,9 +4,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"net/http"
-
 	"github.com/status-im/keycard-go/hexutils"
+	"net/http"
 
 	"github.com/ten-protocol/go-ten/go/common/viewingkey"
 	"github.com/ten-protocol/go-ten/lib/gethfork/node"
@@ -14,6 +13,7 @@ import (
 
 	"github.com/ten-protocol/go-ten/go/common/log"
 
+	gethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ten-protocol/go-ten/go/common/httputil"
 	"github.com/ten-protocol/go-ten/tools/walletextension/common"
 )
@@ -103,7 +103,7 @@ func joinRequestHandler(walletExt *rpcapi.Services, conn UserConn) {
 	}
 
 	// write hex encoded userID in the response
-	err = conn.WriteResponse([]byte("0x" + hexutils.BytesToHex(userID)))
+	err = conn.WriteResponse([]byte("0x" + gethcommon.Bytes2Hex(userID)))
 	if err != nil {
 		walletExt.Logger().Error("error writing success response", log.ErrKey, err)
 	}

@@ -3,7 +3,6 @@ package rpcapi
 import (
 	"fmt"
 
-	"github.com/status-im/keycard-go/hexutils"
 	"github.com/ten-protocol/go-ten/go/common/viewingkey"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -45,7 +44,7 @@ func getUser(userID []byte, s *Services) (*GWUser, error) {
 		result := GWUser{userID: userID, services: s, accounts: map[common.Address]*GWAccount{}}
 		userPrivateKey, err := s.Storage.GetUserPrivateKey(userID)
 		if err != nil {
-			return nil, fmt.Errorf("user %s not found. %w", hexutils.BytesToHex(userID), err)
+			return nil, fmt.Errorf("user %s not found. %w", common.Bytes2Hex(userID), err)
 		}
 		result.userKey = userPrivateKey
 		allAccounts, err := s.Storage.GetAccounts(userID)
