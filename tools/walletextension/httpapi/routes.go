@@ -103,7 +103,7 @@ func joinRequestHandler(walletExt *rpcapi.Services, conn UserConn) {
 	}
 
 	// write hex encoded userID in the response
-	err = conn.WriteResponse([]byte(hexutils.BytesToHex(userID)))
+	err = conn.WriteResponse([]byte("0x" + hexutils.BytesToHex(userID)))
 	if err != nil {
 		walletExt.Logger().Error("error writing success response", log.ErrKey, err)
 	}
