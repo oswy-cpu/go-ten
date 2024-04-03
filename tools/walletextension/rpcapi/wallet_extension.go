@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ten-protocol/go-ten/go/common/log"
+
 	subscriptioncommon "github.com/ten-protocol/go-ten/go/common/subscription"
 
 	common2 "github.com/ten-protocol/go-ten/go/common"
@@ -111,9 +113,16 @@ func NewServices(hostAddrHTTP string, hostAddrWS string, storage storage.Storage
 
 	rpcClient := connectionObj.(rpc.Client)
 	ch := make(chan *common2.BatchHeader)
+	subscribeToNewHeads(rpcClient, ch, services, logger)
+
+	return &services
+}
+
+func subscribeToNewHeads(rpcClient rpc.Client, ch chan *common2.BatchHeader, services Services, logger gethlog.Logger) {
 	clientSubscription, err := rpcClient.Subscribe(context.Background(), rpc.SubscribeNamespace, ch, rpc.SubscriptionTypeNewHeads)
 	if err != nil {
-		panic(fmt.Errorf("cannot subscribe to new heads to the backend %w", err))
+		logger.New("cannot subscribe to new heads to the backend. Retrying", log.ErrKey, err)
+		subscribeToNewHeads(rpcClient, ch, services, logger)
 	}
 
 	services.backendNewHeadsSubscription = clientSubscription
@@ -121,8 +130,6 @@ func NewServices(hostAddrHTTP string, hostAddrWS string, storage storage.Storage
 		// todo - in a followup PR, invalidate cache entries marked as "latest"
 		return nil
 	})
-
-	return &services
 }
 
 // IsStopping returns whether the WE is stopping
