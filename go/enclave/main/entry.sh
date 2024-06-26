@@ -15,7 +15,7 @@ fi
 if [ -n "$PCCS_URL" ]; then
     PCCS_FINAL_URL=$PCCS_URL
 elif [ -n "$PCCS_ADDR" ]; then
-    PCCS_FINAL_URL="${PCCS_ADDR}/sgx/certification/v4/"
+    PCCS_FINAL_URL="https://${PCCS_ADDR}/sgx/certification/v4/"
 else
     PCCS_FINAL_URL="https://global.acccache.azure.net/sgx/certification/v4/"
 fi
