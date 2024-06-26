@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-var _hardcodedClientVersion = "Geth/v10.0.0/ten"
+var _hardcodedClientVersion = "Geth/v10.0.0/drpc"
 
 type Web3API struct {
 	we *Services
