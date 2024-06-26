@@ -140,6 +140,7 @@ func (d *DockerNode) startEnclave() error {
 	exposedPorts := []int{}
 	envs := map[string]string{
 		"OE_SIMULATION": "1",
+		"PCCS_ADDR":     d.cfg.pccsAddr,
 	}
 
 	// default start of the enclave
