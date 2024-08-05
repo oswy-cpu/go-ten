@@ -197,11 +197,11 @@ func (api *FilterAPI) GetLogs(ctx context.Context, crit common.FilterCriteria) (
 		return nil, err
 	}
 
-	rateLimitAllowed, requestUUID := api.we.RateLimiter.Allow(gethcommon.Address(userID))
-	defer api.we.RateLimiter.SetRequestEnd(gethcommon.Address(userID), requestUUID)
-	if !rateLimitAllowed {
-		return nil, fmt.Errorf("rate limit exceeded")
-	}
+	//rateLimitAllowed, requestUUID := api.we.RateLimiter.Allow(gethcommon.Address(userID))
+	//defer api.we.RateLimiter.SetRequestEnd(gethcommon.Address(userID), requestUUID)
+	//if !rateLimitAllowed {
+	//	return nil, fmt.Errorf("rate limit exceeded")
+	//}
 
 	res, err := withCache(
 		api.we.Cache,

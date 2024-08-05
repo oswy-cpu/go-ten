@@ -155,8 +155,8 @@ func NewRateLimiter(rateLimitUserComputeTime time.Duration, rateLimitWindow time
 		maxConcurrentRequests: concurrentRequestsLimit,
 		logger:                logger,
 	}
-	go rl.logRateLimitedStats()
-	go rl.periodicPrune()
+	//go rl.logRateLimitedStats()
+	//go rl.periodicPrune()
 	return rl
 }
 
