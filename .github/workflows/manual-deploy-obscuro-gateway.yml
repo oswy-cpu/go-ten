@@ -119,8 +119,9 @@ jobs:
             echo "Creating directory /home/obscuro"
             mkdir -p /home/obscuro
             
-            echo "Updating package list"
-            sudo apt-get update -y
+            echo "Switch to default apt sources and Updating package list"
+            sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu/|http://archive.ubuntu.com/ubuntu/|g' /etc/apt/sources.list
+            sudo apt-get update
             
             echo "Installing GCC"
             sudo apt-get install -y gcc
