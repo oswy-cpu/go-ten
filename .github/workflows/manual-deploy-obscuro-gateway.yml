@@ -120,10 +120,10 @@ jobs:
             mkdir -p /home/obscuro
             
             echo "Updating package list"
-            sudo apt-get update -y -v
+            sudo apt-get update -y
             
             echo "Installing GCC"
-            sudo apt-get install -y gcc -v
+            sudo apt-get install -y gcc
             if ! gcc --version; then
             echo "GCC installation failed"
             exit 1
