@@ -120,7 +120,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 'Create VM for Obscuro node-${{ github.event.inputs.node_id }} on Azure'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm create -g Testnet -n "${{ vars.AZURE_RESOURCE_PREFIX }}-${{ github.event.inputs.node_id }}-${{ GITHUB.RUN_NUMBER }}" \
@@ -132,7 +132,7 @@ jobs:
             --public-ip-sku Standard --authentication-type password
 
       - name: 'Open Obscuro node-${{ github.event.inputs.host_id }} ports on Azure'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm open-port -g Testnet -n "${{ vars.AZURE_RESOURCE_PREFIX }}-${{ github.event.inputs.node_id }}-${{ GITHUB.RUN_NUMBER }}"  --port 80,81,6060,6061,10000
@@ -143,7 +143,7 @@ jobs:
         run: sleep 60
 
       - name: 'Start Obscuro node-${{ github.event.inputs.node_id }} on Azure'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm run-command invoke -g Testnet -n "${{ vars.AZURE_RESOURCE_PREFIX }}-${{ github.event.inputs.node_id }}-${{ GITHUB.RUN_NUMBER }}"  \

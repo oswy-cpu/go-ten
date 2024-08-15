@@ -55,26 +55,26 @@ jobs:
 
       # This will fail some deletions due to resource dependencies ( ie. you must first delete the vm before deleting the disk)
       - name: 'Delete deployed VMs'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             $(az resource list --tag ${{ vars.AZURE_DEPLOY_GROUP_GATEWAY_DEXYNTH }}=true --query '[]."id"' -o tsv | xargs -n1 az resource delete --verbose -g Testnet --ids) || true
 
       # This will clean up any lingering dependencies - might fail if there are no resources to cleanup
       - name: 'Delete VMs dependencies'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             $(az resource list --tag ${{ vars.AZURE_DEPLOY_GROUP_GATEWAY_DEXYNTH }}=true --query '[]."id"' -o tsv | xargs -n1 az resource delete --verbose -g Testnet --ids) || true
 
       - name: 'Ensure VM Static Public IP Exists'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az network public-ip show -g Testnet -n "${{ github.event.inputs.testnet_type }}-OG-static-dexynth" || az network public-ip create -g Testnet -n "${{ github.event.inputs.testnet_type }}-OG-static-dexynth" --allocation-method Static --sku Standard
 
       - name: 'Assign/Update DNS Name for Public IP'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             existing_dns_name=$(az network public-ip show -g Testnet -n "${{ github.event.inputs.testnet_type }}-OG-static-dexynth" --query dnsSettings.domainNameLabel -o tsv)
@@ -83,7 +83,7 @@ jobs:
             fi
 
       - name: 'Create VM for Gateway node on Azure'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm create -g Testnet -n "${{ github.event.inputs.testnet_type }}-OG-${{ GITHUB.RUN_NUMBER }}-dexynth" \
@@ -95,7 +95,7 @@ jobs:
             --authentication-type password
 
       - name: 'Open Obscuro node-${{ matrix.host_id }} ports on Azure'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm open-port -g Testnet -n "${{ github.event.inputs.testnet_type }}-OG-${{ GITHUB.RUN_NUMBER }}-dexynth"  --port 80,81
@@ -106,7 +106,7 @@ jobs:
         run: sleep 30
 
       - name: 'Start Obscuro gateway on Azure'
-        uses: azure/CLI@v1
+        uses: azure/CLI@v2
         with:
           inlineScript: |
             az vm run-command invoke -g Testnet -n "${{ github.event.inputs.testnet_type }}-OG-${{ GITHUB.RUN_NUMBER }}-dexynth"  \
